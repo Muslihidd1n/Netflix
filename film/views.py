@@ -107,6 +107,7 @@ class TarifAPI(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
 
+
     def delete(self, request, pk):
         tarif = Tarif.objects.get(id=pk).delete()
         tarif.delete()
