@@ -47,7 +47,7 @@ class AktyorAPI(APIView):
         serializer = AktyorSerializers(aktyor)
         return Response(serializer.data)
 
-    def update(self, request, pk):
+    def put(self, request, pk):
         data = request.data
         aktyor = Aktyor.objects.filter(id=pk)
         serializer = AktyorSerializers(aktyor.first(), data=data)
@@ -93,13 +93,13 @@ class TarifAPI(APIView):
         return Response(serializer.data)
 
 
-    def update(self, request, pk):
+    def put(self, request, pk):
         data = request.data
         tarif = Tarif.objects.filter(id=pk)
-        serializer = TarifSerializers(tarif, data=data)
+        serializer = TarifSerializers(tarif.first(), data=data)
         if serializer.is_valid():
             data = serializer.validated_data
-            tarif.updata(
+            tarif.update(
                 nom = data.get("nom"),
                 davomiylik = data.get("davomiylik"),
                 narx = data.get("narx"),
