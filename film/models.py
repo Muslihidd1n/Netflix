@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Aktyor(models.Model):
     ism = models.CharField(max_length=20)
@@ -33,4 +34,17 @@ class KinoAktyor(models.Model):
 
     def __str__(self):
         return f"{self.kino.nom}: {self.aktyor}"
+
+
+class Izoh(models.Model):
+    matn = models.CharField(max_length=300)
+    sana = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    kino = models.ForeignKey(Kino, on_delete=models.CASCADE)
+    baho = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.matn
+
+
 

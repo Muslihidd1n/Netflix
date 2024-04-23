@@ -49,6 +49,10 @@ class KinoAktyorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class IzohSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Izoh
+        fields = '__all__'
 
 
 

@@ -1,6 +1,8 @@
 from rest_framework.generics import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 
 from .serializers import *
 from .models import *
@@ -166,5 +168,38 @@ class AktyorKinolarAPI(APIView):
         kinolar = Kino.objects.filter(id__in=KinoAktyor.objects.filter(aktyor=aktyor).values_list('kino__id', flat=True))
         serializers = KinoSerializer(kinolar, many=True)
         return Response(serializers.data)
+
+class IzohModelViewSet(ModelViewSet):
+    queryset = Izoh.objects.all()
+    serializer_class = IzohSerializer
+
+
+class KinoModelViewSet(ModelViewSet):
+    queryset = Kino.objects.all()
+    serializer_class = KinoPostSerializer
+
+    def list(self, request, *args, **kwargs):
+        kinolar = self.queryset
+        serializer = KinoSerializer(kinolar, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        kino = self.get_object()
+        serializer = KinoSerializer(kino,)
+        return Response(serializer.data)
+
+    @action(detail=True)  #movies/pk/izohlar
+    def izohlar(self, request, pk):
+        kino = self.get_object()
+        kino_izohlari = kino.izoh_set.all()
+        serializer = IzohSerializer(kino_izohlari, many= True)
+        return Response(serializer.data)
+
+    @action(detail=True)  # movies/pk/aktyorlar
+    def aktyorlar(self, request, pk):
+        kino = self.get_object()
+        kino_akyorlari = kino.aktyorlar.all()
+        serializer = AktyorSerializers(kino_akyorlari, many=True)
+        return Response(serializer.data)
 
 
